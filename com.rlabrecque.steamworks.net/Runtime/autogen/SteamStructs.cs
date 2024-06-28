@@ -48,7 +48,7 @@ namespace Steamworks {
 
 	[StructLayout(LayoutKind.Sequential, Pack = Packsize.value)]
 	public struct InputMotionData_t {
-		// Sensor-fused absolute rotation; will drift in heading
+		// Sensor-fused absolute rotation; will drift in heading toward average
 		public float rotQuatX;
 		public float rotQuatY;
 		public float rotQuatZ;

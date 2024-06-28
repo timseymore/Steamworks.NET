@@ -108,7 +108,6 @@ g_ReturnTypeDict = {
     "SteamNetworkingMessage_t *": "IntPtr",
 
     # TODO: UGH
-    "ISteamAppList *": "IntPtr",
     "ISteamApps *": "IntPtr",
     "ISteamController *": "IntPtr",
     "ISteamFriends *": "IntPtr",
@@ -144,9 +143,6 @@ g_SpecialReturnTypeDict = {
 
 g_SpecialArgsDict = {
     # These args are missing a clang attribute like ARRAY_COUNT
-    "ISteamAppList_GetInstalledApps": {
-        "pvecAppID": "AppId_t[]",
-    },
     "ISteamApps_GetInstalledDepots": {
         "pvecDepots": "DepotId_t[]",
     },
@@ -246,6 +242,9 @@ g_SpecialArgsDict = {
     "ISteamUGC_StopPlaytimeTracking": {
         "pvecPublishedFileID": "PublishedFileId_t[]",
     },
+    "ISteamUGC_GetUserContentDescriptorPreferences": {
+        "pvecDescriptors": "EUGCContentDescriptorID[]",
+    },
     "ISteamUser_InitiateGameConnection_DEPRECATED": {
         "pAuthBlob": "byte[]",
     },
@@ -335,6 +334,9 @@ g_SpecialArgsDict = {
     "ISteamGameServerUGC_StopPlaytimeTracking": {
         "pvecPublishedFileID": "PublishedFileId_t[]",
     },
+    "ISteamGameServerUGC_GetUserContentDescriptorPreferences": {
+        "pvecDescriptors": "EUGCContentDescriptorID[]",
+    },
 
     # This is a little nicety that we provide, I don't know why Valve doesn't just change it.
     "ISteamFriends_GetFriendCount": {
@@ -422,11 +424,11 @@ g_SpecialArgsDict = {
     },
 
     "ISteamNetworkingSockets_SendMessages": {
-        "pMessages": "SteamNetworkingMessage_t[]",
+        "pMessages": "IntPtr[]",
         "pOutMessageNumberOrResult": "long[]",
     },
     "ISteamGameServerNetworkingSockets_SendMessages": {
-        "pMessages": "SteamNetworkingMessage_t[]",
+        "pMessages": "IntPtr[]",
         "pOutMessageNumberOrResult": "long[]",
     },
 
@@ -437,6 +439,15 @@ g_SpecialArgsDict = {
     "ISteamGameServerNetworkingSockets_GetConnectionRealTimeStatus": {
         "pStatus": "ref SteamNetConnectionRealTimeStatus_t",
         "pLanes": "ref SteamNetConnectionRealTimeLaneStatus_t",
+    },
+
+    "ISteamNetworkingSockets_ConfigureConnectionLanes": {
+        "pLanePriorities": "int[]",
+        "pLaneWeights": "ushort[]",
+    },
+    "ISteamGameServerNetworkingSockets_ConfigureConnectionLanes": {
+        "pLanePriorities": "int[]",
+        "pLaneWeights": "ushort[]",
     },
 }
 
