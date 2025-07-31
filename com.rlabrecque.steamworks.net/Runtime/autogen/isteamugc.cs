@@ -166,6 +166,34 @@ namespace Steamworks {
 		}
 
 		/// <summary>
+		/// <para> Some items can specify that they have a version that is valid for a range of game versions (Steam branch)</para>
+		/// </summary>
+		public static uint GetNumSupportedGameVersions(UGCQueryHandle_t handle, uint index) {
+			InteropHelp.TestIfAvailableClient();
+			return NativeMethods.ISteamUGC_GetNumSupportedGameVersions(CSteamAPIContext.GetSteamUGC(), handle, index);
+		}
+
+		public static bool GetSupportedGameVersionData(UGCQueryHandle_t handle, uint index, uint versionIndex, out string pchGameBranchMin, out string pchGameBranchMax, uint cchGameBranchSize) {
+			InteropHelp.TestIfAvailableClient();
+			IntPtr pchGameBranchMin2 = Marshal.AllocHGlobal((int)cchGameBranchSize);
+			IntPtr pchGameBranchMax2 = Marshal.AllocHGlobal((int)cchGameBranchSize);
+			bool ret = NativeMethods.ISteamUGC_GetSupportedGameVersionData(CSteamAPIContext.GetSteamUGC(), handle, index, versionIndex, pchGameBranchMin2, pchGameBranchMax2, cchGameBranchSize);
+			pchGameBranchMin = ret ? InteropHelp.PtrToStringUTF8(pchGameBranchMin2) : null;
+			Marshal.FreeHGlobal(pchGameBranchMin2);
+			pchGameBranchMax = ret ? InteropHelp.PtrToStringUTF8(pchGameBranchMax2) : null;
+			Marshal.FreeHGlobal(pchGameBranchMax2);
+			return ret;
+		}
+
+		public static uint GetQueryUGCContentDescriptors(UGCQueryHandle_t handle, uint index, EUGCContentDescriptorID[] pvecDescriptors, uint cMaxEntries) {
+			InteropHelp.TestIfAvailableClient();
+			if (pvecDescriptors != null && pvecDescriptors.Length != cMaxEntries) {
+				throw new System.ArgumentException("pvecDescriptors must be the same size as cMaxEntries!");
+			}
+			return NativeMethods.ISteamUGC_GetQueryUGCContentDescriptors(CSteamAPIContext.GetSteamUGC(), handle, index, pvecDescriptors, cMaxEntries);
+		}
+
+		/// <summary>
 		/// <para> Release the request to free up memory, after retrieving results</para>
 		/// </summary>
 		public static bool ReleaseQueryUGCRequest(UGCQueryHandle_t handle) {
@@ -248,6 +276,14 @@ namespace Steamworks {
 		public static bool SetAllowCachedResponse(UGCQueryHandle_t handle, uint unMaxAgeSeconds) {
 			InteropHelp.TestIfAvailableClient();
 			return NativeMethods.ISteamUGC_SetAllowCachedResponse(CSteamAPIContext.GetSteamUGC(), handle, unMaxAgeSeconds);
+		}
+
+		/// <summary>
+		/// <para> admin queries return hidden items</para>
+		/// </summary>
+		public static bool SetAdminQuery(UGCUpdateHandle_t handle, bool bAdminQuery) {
+			InteropHelp.TestIfAvailableClient();
+			return NativeMethods.ISteamUGC_SetAdminQuery(CSteamAPIContext.GetSteamUGC(), handle, bAdminQuery);
 		}
 
 		/// <summary>
@@ -374,9 +410,9 @@ namespace Steamworks {
 		/// <summary>
 		/// <para> change the tags of an UGC item</para>
 		/// </summary>
-		public static bool SetItemTags(UGCUpdateHandle_t updateHandle, System.Collections.Generic.IList<string> pTags) {
+		public static bool SetItemTags(UGCUpdateHandle_t updateHandle, System.Collections.Generic.IList<string> pTags, bool bAllowAdminTags = false) {
 			InteropHelp.TestIfAvailableClient();
-			return NativeMethods.ISteamUGC_SetItemTags(CSteamAPIContext.GetSteamUGC(), updateHandle, new InteropHelp.SteamParamStringArray(pTags));
+			return NativeMethods.ISteamUGC_SetItemTags(CSteamAPIContext.GetSteamUGC(), updateHandle, new InteropHelp.SteamParamStringArray(pTags), bAllowAdminTags);
 		}
 
 		/// <summary>
@@ -484,6 +520,27 @@ namespace Steamworks {
 			return NativeMethods.ISteamUGC_RemoveItemPreview(CSteamAPIContext.GetSteamUGC(), handle, index);
 		}
 
+		public static bool AddContentDescriptor(UGCUpdateHandle_t handle, EUGCContentDescriptorID descid) {
+			InteropHelp.TestIfAvailableClient();
+			return NativeMethods.ISteamUGC_AddContentDescriptor(CSteamAPIContext.GetSteamUGC(), handle, descid);
+		}
+
+		public static bool RemoveContentDescriptor(UGCUpdateHandle_t handle, EUGCContentDescriptorID descid) {
+			InteropHelp.TestIfAvailableClient();
+			return NativeMethods.ISteamUGC_RemoveContentDescriptor(CSteamAPIContext.GetSteamUGC(), handle, descid);
+		}
+
+		/// <summary>
+		/// <para> an empty string for either parameter means that it will match any version on that end of the range. This will only be applied if the actual content has been changed.</para>
+		/// </summary>
+		public static bool SetRequiredGameVersions(UGCUpdateHandle_t handle, string pszGameBranchMin, string pszGameBranchMax) {
+			InteropHelp.TestIfAvailableClient();
+			using (var pszGameBranchMin2 = new InteropHelp.UTF8StringHandle(pszGameBranchMin))
+			using (var pszGameBranchMax2 = new InteropHelp.UTF8StringHandle(pszGameBranchMax)) {
+				return NativeMethods.ISteamUGC_SetRequiredGameVersions(CSteamAPIContext.GetSteamUGC(), handle, pszGameBranchMin2, pszGameBranchMax2);
+			}
+		}
+
 		/// <summary>
 		/// <para> commit update process started with StartItemUpdate()</para>
 		/// </summary>
@@ -541,17 +598,17 @@ namespace Steamworks {
 		/// <summary>
 		/// <para> number of subscribed items</para>
 		/// </summary>
-		public static uint GetNumSubscribedItems() {
+		public static uint GetNumSubscribedItems(bool bIncludeLocallyDisabled = false) {
 			InteropHelp.TestIfAvailableClient();
-			return NativeMethods.ISteamUGC_GetNumSubscribedItems(CSteamAPIContext.GetSteamUGC());
+			return NativeMethods.ISteamUGC_GetNumSubscribedItems(CSteamAPIContext.GetSteamUGC(), bIncludeLocallyDisabled);
 		}
 
 		/// <summary>
 		/// <para> all subscribed item PublishFileIDs</para>
 		/// </summary>
-		public static uint GetSubscribedItems(PublishedFileId_t[] pvecPublishedFileID, uint cMaxEntries) {
+		public static uint GetSubscribedItems(PublishedFileId_t[] pvecPublishedFileID, uint cMaxEntries, bool bIncludeLocallyDisabled = false) {
 			InteropHelp.TestIfAvailableClient();
-			return NativeMethods.ISteamUGC_GetSubscribedItems(CSteamAPIContext.GetSteamUGC(), pvecPublishedFileID, cMaxEntries);
+			return NativeMethods.ISteamUGC_GetSubscribedItems(CSteamAPIContext.GetSteamUGC(), pvecPublishedFileID, cMaxEntries, bIncludeLocallyDisabled);
 		}
 
 		/// <summary>
@@ -687,6 +744,30 @@ namespace Steamworks {
 		public static SteamAPICall_t GetWorkshopEULAStatus() {
 			InteropHelp.TestIfAvailableClient();
 			return (SteamAPICall_t)NativeMethods.ISteamUGC_GetWorkshopEULAStatus(CSteamAPIContext.GetSteamUGC());
+		}
+
+		/// <summary>
+		/// <para> Return the user's community content descriptor preferences</para>
+		/// </summary>
+		public static uint GetUserContentDescriptorPreferences(EUGCContentDescriptorID[] pvecDescriptors, uint cMaxEntries) {
+			InteropHelp.TestIfAvailableClient();
+			return NativeMethods.ISteamUGC_GetUserContentDescriptorPreferences(CSteamAPIContext.GetSteamUGC(), pvecDescriptors, cMaxEntries);
+		}
+
+		/// <summary>
+		/// <para> Sets whether the item should be disabled locally or not. This means that it will not be returned in GetSubscribedItems() by default.</para>
+		/// </summary>
+		public static bool SetItemsDisabledLocally(PublishedFileId_t[] pvecPublishedFileIDs, uint unNumPublishedFileIDs, bool bDisabledLocally) {
+			InteropHelp.TestIfAvailableClient();
+			return NativeMethods.ISteamUGC_SetItemsDisabledLocally(CSteamAPIContext.GetSteamUGC(), pvecPublishedFileIDs, unNumPublishedFileIDs, bDisabledLocally);
+		}
+
+		/// <summary>
+		/// <para> Set the local load order for these items. If there are any items not in the given list, they will sort by the time subscribed.</para>
+		/// </summary>
+		public static bool SetSubscriptionsLoadOrder(PublishedFileId_t[] pvecPublishedFileIDs, uint unNumPublishedFileIDs) {
+			InteropHelp.TestIfAvailableClient();
+			return NativeMethods.ISteamUGC_SetSubscriptionsLoadOrder(CSteamAPIContext.GetSteamUGC(), pvecPublishedFileIDs, unNumPublishedFileIDs);
 		}
 	}
 }

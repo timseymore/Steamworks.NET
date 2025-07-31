@@ -18,17 +18,6 @@ using Flags = System.FlagsAttribute;
 
 namespace Steamworks {
 	//-----------------------------------------------------------------------------
-	// Purpose: possible results when registering an activation code
-	//-----------------------------------------------------------------------------
-	public enum ERegisterActivationCodeResult : int {
-		k_ERegisterActivationCodeResultOK = 0,
-		k_ERegisterActivationCodeResultFail = 1,
-		k_ERegisterActivationCodeResultAlreadyRegistered = 2,
-		k_ERegisterActivationCodeResultTimeout = 3,
-		k_ERegisterActivationCodeAlreadyOwned = 4,
-	}
-
-	//-----------------------------------------------------------------------------
 	// Purpose: set of relationships to other users
 	//-----------------------------------------------------------------------------
 	public enum EFriendRelationship : int {
@@ -80,20 +69,6 @@ namespace Steamworks {
 		// k_EFriendFlagSuggested		= 0x800,	// not used
 		k_EFriendFlagChatMember		= 0x1000,
 		k_EFriendFlagAll			= 0xFFFF,
-	}
-
-	//-----------------------------------------------------------------------------
-	// Purpose: user restriction flags
-	//-----------------------------------------------------------------------------
-	public enum EUserRestriction : int {
-		k_nUserRestrictionNone		= 0,	// no known chat/content restriction
-		k_nUserRestrictionUnknown	= 1,	// we don't know yet (user offline)
-		k_nUserRestrictionAnyChat	= 2,	// user is not allowed to (or can't) send/recv any chat
-		k_nUserRestrictionVoiceChat	= 4,	// user is not allowed to (or can't) send/recv voice chat
-		k_nUserRestrictionGroupChat	= 8,	// user is not allowed to (or can't) send/recv group chat
-		k_nUserRestrictionRating	= 16,	// user is too young according to rating in current region
-		k_nUserRestrictionGameInvites	= 32,	// user cannot send or recv game invites (e.g. mobile)
-		k_nUserRestrictionTrading	= 64,	// user cannot participate in trading (console, mobile)
 	}
 
 	// These values are passed as parameters to the store
@@ -177,50 +152,52 @@ namespace Steamworks {
 		eHTMLMouseButton_Middle = 2,
 	}
 
-	public enum EMouseCursor : int {
-		dc_user = 0,
-		dc_none,
-		dc_arrow,
-		dc_ibeam,
-		dc_hourglass,
-		dc_waitarrow,
-		dc_crosshair,
-		dc_up,
-		dc_sizenw,
-		dc_sizese,
-		dc_sizene,
-		dc_sizesw,
-		dc_sizew,
-		dc_sizee,
-		dc_sizen,
-		dc_sizes,
-		dc_sizewe,
-		dc_sizens,
-		dc_sizeall,
-		dc_no,
-		dc_hand,
-		dc_blank, // don't show any custom cursor, just use your default
-		dc_middle_pan,
-		dc_north_pan,
-		dc_north_east_pan,
-		dc_east_pan,
-		dc_south_east_pan,
-		dc_south_pan,
-		dc_south_west_pan,
-		dc_west_pan,
-		dc_north_west_pan,
-		dc_alias,
-		dc_cell,
-		dc_colresize,
-		dc_copycur,
-		dc_verticaltext,
-		dc_rowresize,
-		dc_zoomin,
-		dc_zoomout,
-		dc_help,
-		dc_custom,
+	public enum EHTMLMouseCursor : int {
+		k_EHTMLMouseCursor_User = 0,
+		k_EHTMLMouseCursor_None,
+		k_EHTMLMouseCursor_Arrow,
+		k_EHTMLMouseCursor_IBeam,
+		k_EHTMLMouseCursor_Hourglass,
+		k_EHTMLMouseCursor_WaitArrow,
+		k_EHTMLMouseCursor_Crosshair,
+		k_EHTMLMouseCursor_Up,
+		k_EHTMLMouseCursor_SizeNW,
+		k_EHTMLMouseCursor_SizeSE,
+		k_EHTMLMouseCursor_SizeNE,
+		k_EHTMLMouseCursor_SizeSW,
+		k_EHTMLMouseCursor_SizeW,
+		k_EHTMLMouseCursor_SizeE,
+		k_EHTMLMouseCursor_SizeN,
+		k_EHTMLMouseCursor_SizeS,
+		k_EHTMLMouseCursor_SizeWE,
+		k_EHTMLMouseCursor_SizeNS,
+		k_EHTMLMouseCursor_SizeAll,
+		k_EHTMLMouseCursor_No,
+		k_EHTMLMouseCursor_Hand,
+		k_EHTMLMouseCursor_Blank, // don't show any custom cursor, just use your default
+		k_EHTMLMouseCursor_MiddlePan,
+		k_EHTMLMouseCursor_NorthPan,
+		k_EHTMLMouseCursor_NorthEastPan,
+		k_EHTMLMouseCursor_EastPan,
+		k_EHTMLMouseCursor_SouthEastPan,
+		k_EHTMLMouseCursor_SouthPan,
+		k_EHTMLMouseCursor_SouthWestPan,
+		k_EHTMLMouseCursor_WestPan,
+		k_EHTMLMouseCursor_NorthWestPan,
+		k_EHTMLMouseCursor_Alias,
+		k_EHTMLMouseCursor_Cell,
+		k_EHTMLMouseCursor_ColResize,
+		k_EHTMLMouseCursor_CopyCur,
+		k_EHTMLMouseCursor_VerticalText,
+		k_EHTMLMouseCursor_RowResize,
+		k_EHTMLMouseCursor_ZoomIn,
+		k_EHTMLMouseCursor_ZoomOut,
+		k_EHTMLMouseCursor_Help,
+		k_EHTMLMouseCursor_Custom,
+		k_EHTMLMouseCursor_SizeNWSE,
+		k_EHTMLMouseCursor_SizeNESW,
 
-		dc_last, // custom cursors start from this value and up
+		k_EHTMLMouseCursor_last, // custom cursors start from this value and up
 	}
 
 	[Flags]
@@ -517,10 +494,10 @@ namespace Steamworks {
 		k_EInputActionOrigin_Switch_LeftGrip_Upper, // Left JoyCon SL Button
 		k_EInputActionOrigin_Switch_RightGrip_Lower,  // Right JoyCon SL Button
 		k_EInputActionOrigin_Switch_RightGrip_Upper,  // Right JoyCon SR Button
-		k_EInputActionOrigin_Switch_Reserved11,
-		k_EInputActionOrigin_Switch_Reserved12,
-		k_EInputActionOrigin_Switch_Reserved13,
-		k_EInputActionOrigin_Switch_Reserved14,
+		k_EInputActionOrigin_Switch_JoyConButton_N, // With a Horizontal JoyCon this will be Y or what would be Dpad Right when vertical
+		k_EInputActionOrigin_Switch_JoyConButton_E, // X
+		k_EInputActionOrigin_Switch_JoyConButton_S, // A
+		k_EInputActionOrigin_Switch_JoyConButton_W, // B
 		k_EInputActionOrigin_Switch_Reserved15,
 		k_EInputActionOrigin_Switch_Reserved16,
 		k_EInputActionOrigin_Switch_Reserved17,
@@ -584,10 +561,10 @@ namespace Steamworks {
 		k_EInputActionOrigin_PS5_Gyro_Yaw,
 		k_EInputActionOrigin_PS5_Gyro_Roll,
 		k_EInputActionOrigin_PS5_DPad_Move,
-		k_EInputActionOrigin_PS5_Reserved1,
-		k_EInputActionOrigin_PS5_Reserved2,
-		k_EInputActionOrigin_PS5_Reserved3,
-		k_EInputActionOrigin_PS5_Reserved4,
+		k_EInputActionOrigin_PS5_LeftGrip,
+		k_EInputActionOrigin_PS5_RightGrip,
+		k_EInputActionOrigin_PS5_LeftFn,
+		k_EInputActionOrigin_PS5_RightFn,
 		k_EInputActionOrigin_PS5_Reserved5,
 		k_EInputActionOrigin_PS5_Reserved6,
 		k_EInputActionOrigin_PS5_Reserved7,
@@ -680,6 +657,11 @@ namespace Steamworks {
 		k_EInputActionOrigin_SteamDeck_Reserved19,
 		k_EInputActionOrigin_SteamDeck_Reserved20,
 
+		k_EInputActionOrigin_Horipad_M1,
+		k_EInputActionOrigin_Horipad_M2,
+		k_EInputActionOrigin_Horipad_L4,
+		k_EInputActionOrigin_Horipad_R4,
+
 		k_EInputActionOrigin_Count, // If Steam has added support for new controllers origins will go here.
 		k_EInputActionOrigin_MaximumPossibleValue = 32767, // Origins are currently a maximum of 16 bits.
 	}
@@ -721,6 +703,7 @@ namespace Steamworks {
 		k_ESteamControllerPad_Right
 	}
 
+	[Flags]
 	public enum EControllerHapticLocation : int {
 		k_EControllerHapticLocation_Left = ( 1 << ESteamControllerPad.k_ESteamControllerPad_Left ),
 		k_EControllerHapticLocation_Right = ( 1 << ESteamControllerPad.k_ESteamControllerPad_Right ),
@@ -979,6 +962,8 @@ namespace Steamworks {
 		k_EFeatureLibrary = 11,
 		k_EFeatureTest = 12,
 		k_EFeatureSiteLicense = 13,
+		k_EFeatureKioskMode_Deprecated = 14,
+		k_EFeatureBlockAlways = 15,
 		k_EFeatureMax
 	}
 
@@ -991,6 +976,158 @@ namespace Steamworks {
 		k_ESteamDeviceFormFactorTablet		= 2,
 		k_ESteamDeviceFormFactorComputer	= 3,
 		k_ESteamDeviceFormFactorTV			= 4,
+		k_ESteamDeviceFormFactorVRHeadset	= 5,
+	}
+
+	//-----------------------------------------------------------------------------
+	// Purpose: The type of input in ERemotePlayInput_t
+	//-----------------------------------------------------------------------------
+	public enum ERemotePlayInputType : int {
+		k_ERemotePlayInputUnknown,
+		k_ERemotePlayInputMouseMotion,
+		k_ERemotePlayInputMouseButtonDown,
+		k_ERemotePlayInputMouseButtonUp,
+		k_ERemotePlayInputMouseWheel,
+		k_ERemotePlayInputKeyDown,
+		k_ERemotePlayInputKeyUp
+	}
+
+	//-----------------------------------------------------------------------------
+	// Purpose: Mouse buttons in ERemotePlayInput_t
+	//-----------------------------------------------------------------------------
+	public enum ERemotePlayMouseButton : int {
+		k_ERemotePlayMouseButtonLeft = 0x0001,
+		k_ERemotePlayMouseButtonRight = 0x0002,
+		k_ERemotePlayMouseButtonMiddle = 0x0010,
+		k_ERemotePlayMouseButtonX1 = 0x0020,
+		k_ERemotePlayMouseButtonX2 = 0x0040,
+	}
+
+	//-----------------------------------------------------------------------------
+	// Purpose: Mouse wheel direction in ERemotePlayInput_t
+	//-----------------------------------------------------------------------------
+	public enum ERemotePlayMouseWheelDirection : int {
+		k_ERemotePlayMouseWheelUp = 1,
+		k_ERemotePlayMouseWheelDown = 2,
+		k_ERemotePlayMouseWheelLeft = 3,
+		k_ERemotePlayMouseWheelRight = 4,
+	}
+
+	//-----------------------------------------------------------------------------
+	// Purpose: Key scancode in ERemotePlayInput_t
+	//
+	// This is a USB scancode value as defined for the Keyboard/Keypad Page (0x07)
+	// This enumeration isn't a complete list, just the most commonly used keys.
+	//-----------------------------------------------------------------------------
+	public enum ERemotePlayScancode : int {
+		k_ERemotePlayScancodeUnknown = 0,
+
+		k_ERemotePlayScancodeA = 4,
+		k_ERemotePlayScancodeB = 5,
+		k_ERemotePlayScancodeC = 6,
+		k_ERemotePlayScancodeD = 7,
+		k_ERemotePlayScancodeE = 8,
+		k_ERemotePlayScancodeF = 9,
+		k_ERemotePlayScancodeG = 10,
+		k_ERemotePlayScancodeH = 11,
+		k_ERemotePlayScancodeI = 12,
+		k_ERemotePlayScancodeJ = 13,
+		k_ERemotePlayScancodeK = 14,
+		k_ERemotePlayScancodeL = 15,
+		k_ERemotePlayScancodeM = 16,
+		k_ERemotePlayScancodeN = 17,
+		k_ERemotePlayScancodeO = 18,
+		k_ERemotePlayScancodeP = 19,
+		k_ERemotePlayScancodeQ = 20,
+		k_ERemotePlayScancodeR = 21,
+		k_ERemotePlayScancodeS = 22,
+		k_ERemotePlayScancodeT = 23,
+		k_ERemotePlayScancodeU = 24,
+		k_ERemotePlayScancodeV = 25,
+		k_ERemotePlayScancodeW = 26,
+		k_ERemotePlayScancodeX = 27,
+		k_ERemotePlayScancodeY = 28,
+		k_ERemotePlayScancodeZ = 29,
+
+		k_ERemotePlayScancode1 = 30,
+		k_ERemotePlayScancode2 = 31,
+		k_ERemotePlayScancode3 = 32,
+		k_ERemotePlayScancode4 = 33,
+		k_ERemotePlayScancode5 = 34,
+		k_ERemotePlayScancode6 = 35,
+		k_ERemotePlayScancode7 = 36,
+		k_ERemotePlayScancode8 = 37,
+		k_ERemotePlayScancode9 = 38,
+		k_ERemotePlayScancode0 = 39,
+
+		k_ERemotePlayScancodeReturn = 40,
+		k_ERemotePlayScancodeEscape = 41,
+		k_ERemotePlayScancodeBackspace = 42,
+		k_ERemotePlayScancodeTab = 43,
+		k_ERemotePlayScancodeSpace = 44,
+		k_ERemotePlayScancodeMinus = 45,
+		k_ERemotePlayScancodeEquals = 46,
+		k_ERemotePlayScancodeLeftBracket = 47,
+		k_ERemotePlayScancodeRightBracket = 48,
+		k_ERemotePlayScancodeBackslash = 49,
+		k_ERemotePlayScancodeSemicolon = 51,
+		k_ERemotePlayScancodeApostrophe = 52,
+		k_ERemotePlayScancodeGrave = 53,
+		k_ERemotePlayScancodeComma = 54,
+		k_ERemotePlayScancodePeriod = 55,
+		k_ERemotePlayScancodeSlash = 56,
+		k_ERemotePlayScancodeCapsLock = 57,
+
+		k_ERemotePlayScancodeF1 = 58,
+		k_ERemotePlayScancodeF2 = 59,
+		k_ERemotePlayScancodeF3 = 60,
+		k_ERemotePlayScancodeF4 = 61,
+		k_ERemotePlayScancodeF5 = 62,
+		k_ERemotePlayScancodeF6 = 63,
+		k_ERemotePlayScancodeF7 = 64,
+		k_ERemotePlayScancodeF8 = 65,
+		k_ERemotePlayScancodeF9 = 66,
+		k_ERemotePlayScancodeF10 = 67,
+		k_ERemotePlayScancodeF11 = 68,
+		k_ERemotePlayScancodeF12 = 69,
+
+		k_ERemotePlayScancodeInsert = 73,
+		k_ERemotePlayScancodeHome = 74,
+		k_ERemotePlayScancodePageUp = 75,
+		k_ERemotePlayScancodeDelete = 76,
+		k_ERemotePlayScancodeEnd = 77,
+		k_ERemotePlayScancodePageDown = 78,
+		k_ERemotePlayScancodeRight = 79,
+		k_ERemotePlayScancodeLeft = 80,
+		k_ERemotePlayScancodeDown = 81,
+		k_ERemotePlayScancodeUp = 82,
+
+		k_ERemotePlayScancodeLeftControl = 224,
+		k_ERemotePlayScancodeLeftShift = 225,
+		k_ERemotePlayScancodeLeftAlt = 226,
+		k_ERemotePlayScancodeLeftGUI = 227, // windows, command (apple), meta
+		k_ERemotePlayScancodeRightControl = 228,
+		k_ERemotePlayScancodeRightShift = 229,
+		k_ERemotePlayScancodeRightALT = 230,
+		k_ERemotePlayScancodeRightGUI = 231, // windows, command (apple), meta
+	}
+
+	//-----------------------------------------------------------------------------
+	// Purpose: Key modifier in ERemotePlayInput_t
+	//-----------------------------------------------------------------------------
+	public enum ERemotePlayKeyModifier : int {
+		k_ERemotePlayKeyModifierNone			= 0x0000,
+		k_ERemotePlayKeyModifierLeftShift		= 0x0001,
+		k_ERemotePlayKeyModifierRightShift		= 0x0002,
+		k_ERemotePlayKeyModifierLeftControl		= 0x0040,
+		k_ERemotePlayKeyModifierRightControl	= 0x0080,
+		k_ERemotePlayKeyModifierLeftAlt			= 0x0100,
+		k_ERemotePlayKeyModifierRightAlt		= 0x0200,
+		k_ERemotePlayKeyModifierLeftGUI			= 0x0400,
+		k_ERemotePlayKeyModifierRightGUI		= 0x0800,
+		k_ERemotePlayKeyModifierNumLock			= 0x1000,
+		k_ERemotePlayKeyModifierCapsLock		= 0x2000,
+		k_ERemotePlayKeyModifierMask			= 0xFFFF,
 	}
 
 	[Flags]
@@ -1034,9 +1171,10 @@ namespace Steamworks {
 		k_EWorkshopFileTypeSteamworksAccessInvite = 13,		// internal
 		k_EWorkshopFileTypeSteamVideo			  = 14,		// Steam video
 		k_EWorkshopFileTypeGameManagedItem		  = 15,		// managed completely by the game, not the user, and not shown on the web
+		k_EWorkshopFileTypeClip					  = 16,		// internal
 
 		// Update k_EWorkshopFileTypeMax if you add values.
-		k_EWorkshopFileTypeMax = 16
+		k_EWorkshopFileTypeMax = 17
 
 	}
 
@@ -1109,6 +1247,31 @@ namespace Steamworks {
 		k_EVRScreenshotType_MonoCubemap		= 3,
 		k_EVRScreenshotType_MonoPanorama	= 4,
 		k_EVRScreenshotType_StereoPanorama	= 5
+	}
+
+	// callbacks
+	// Controls the color of the timeline bar segments. The value names listed here map to a multiplayer game, where
+	// the user starts a game (in menus), then joins a multiplayer session that first has a character selection lobby
+	// then finally the multiplayer session starts. However, you can also map these values to any type of game. In a single
+	// player game where you visit towns & dungeons, you could set k_ETimelineGameMode_Menus when the player is in a town
+	// buying items, k_ETimelineGameMode_Staging for when a dungeon is loading and k_ETimelineGameMode_Playing for when
+	// inside the dungeon fighting monsters.
+	public enum ETimelineGameMode : int {
+		k_ETimelineGameMode_Invalid = 0,
+		k_ETimelineGameMode_Playing = 1,
+		k_ETimelineGameMode_Staging = 2,
+		k_ETimelineGameMode_Menus = 3,
+		k_ETimelineGameMode_LoadingScreen = 4,
+
+		k_ETimelineGameMode_Max, // one past the last valid value
+	}
+
+	// Used in AddTimelineEvent, where Featured events will be offered before Standard events
+	public enum ETimelineEventClipPriority : int {
+		k_ETimelineEventClipPriority_Invalid = 0,
+		k_ETimelineEventClipPriority_None = 1,
+		k_ETimelineEventClipPriority_Standard = 2,
+		k_ETimelineEventClipPriority_Featured = 3,
 	}
 
 	// Matching UGC types for queries
@@ -1196,6 +1359,7 @@ namespace Steamworks {
 		k_EItemStateNeedsUpdate		= 8,	// items needs an update. Either because it's not installed yet or creator updated content
 		k_EItemStateDownloading		= 16,	// item update is currently downloading
 		k_EItemStateDownloadPending	= 32,	// DownloadItem() was called for this item, content isn't available until DownloadItemResult_t is fired
+		k_EItemStateDisabledLocally = 64,	// Item is disabled locally, so it shouldn't be considered subscribed
 	}
 
 	public enum EItemStatistic : int {
@@ -1227,7 +1391,16 @@ namespace Steamworks {
 																	// |   |Dn |       |
 																	// +---+---+---+---+
 		k_EItemPreviewType_EnvironmentMap_LatLong			= 4,	// standard image file expected
+		k_EItemPreviewType_Clip								= 5,	// clip id is stored
 		k_EItemPreviewType_ReservedMax						= 255,	// you can specify your own types above this value
+	}
+
+	public enum EUGCContentDescriptorID : int {
+		k_EUGCContentDescriptor_NudityOrSexualContent	= 1,
+		k_EUGCContentDescriptor_FrequentViolenceOrGore	= 2,
+		k_EUGCContentDescriptor_AdultOnlySexualContent	= 3,
+		k_EUGCContentDescriptor_GratuitousSexualContent = 4,
+		k_EUGCContentDescriptor_AnyMatureContent		= 5,
 	}
 
 	public enum EFailureType : int {
@@ -1320,6 +1493,19 @@ namespace Steamworks {
 		eNoServersListedOnMasterServer // for the Internet query type, returned in response callback if no servers of this type match
 	}
 
+	//----------------------------------------------------------------------------------------------------------------------------------------------------------//
+	//	Steam API setup & shutdown
+	//
+	//	These functions manage loading, initializing and shutdown of the steamclient.dll
+	//
+	//----------------------------------------------------------------------------------------------------------------------------------------------------------//
+	public enum ESteamAPIInitResult : int {
+		k_ESteamAPIInitResult_OK = 0,
+		k_ESteamAPIInitResult_FailedGeneric = 1, // Some other failure
+		k_ESteamAPIInitResult_NoSteamClient = 2, // We cannot connect to Steam, steam probably isn't running
+		k_ESteamAPIInitResult_VersionMismatch = 3, // Steam client appears to be out of date
+	}
+
 	public enum EServerMode : int {
 		eServerModeInvalid = 0, // DO NOT USE
 		eServerModeNoAuthentication = 1, // Don't authenticate user logins and don't list on the server list
@@ -1395,7 +1581,7 @@ namespace Steamworks {
 		k_EResultAccountLogonDenied = 63,			// account login denied due to 2nd factor authentication failure
 		k_EResultCannotUseOldPassword = 64,			// The requested new password is not legal
 		k_EResultInvalidLoginAuthCode = 65,			// account login denied due to auth code invalid
-		k_EResultAccountLogonDeniedNoMail = 66,		// account login denied due to 2nd factor auth failure - and no mail has been sent
+		k_EResultAccountLogonDeniedNoMail = 66,		// account login denied due to 2nd factor auth failure - and no mail has been sent - partner site specific
 		k_EResultHardwareNotCapableOfIPT = 67,		//
 		k_EResultIPTInitError = 68,					//
 		k_EResultParentalControlRestricted = 69,	// operation failed due to parental control restrictions for current user
@@ -1457,6 +1643,9 @@ namespace Steamworks {
 		k_EResultChargerRequired = 125,				// The operation requires a charger to be plugged in, which wasn't present
 		k_EResultCachedCredentialInvalid = 126,		// Cached credential was invalid - user must reauthenticate
 		K_EResultPhoneNumberIsVOIP = 127,			// The phone number provided is a Voice Over IP number
+		k_EResultNotSupported = 128,				// The data being accessed is not supported by this API
+		k_EResultFamilySizeLimitExceeded = 129,		// Reached the maximum size of the family
+		k_EResultOfflineAppCacheInvalid = 130,		// The local data for the offline mode cache is insufficient to login
 	}
 
 	// Error codes for use with the voice functions
@@ -1516,6 +1705,7 @@ namespace Steamworks {
 		k_EAuthSessionResponseAuthTicketInvalidAlreadyUsed = 7,	// This ticket has already been used, it is not valid.
 		k_EAuthSessionResponseAuthTicketInvalid = 8,			// This ticket is not from a user instance currently connected to steam.
 		k_EAuthSessionResponsePublisherIssuedBan = 9,			// The user is banned for this game. The ban came via the web api and not VAC
+		k_EAuthSessionResponseAuthTicketNetworkIdentityFailure = 10,	// The network identity in the ticket does not match the server authenticating the ticket
 	}
 
 	// results from UserHasLicenseForApp
@@ -1603,6 +1793,7 @@ namespace Steamworks {
 	// Purpose: Possible positions to tell the overlay to show notifications in
 	//-----------------------------------------------------------------------------
 	public enum ENotificationPosition : int {
+		k_EPositionInvalid = -1,
 		k_EPositionTopLeft = 0,
 		k_EPositionTopRight = 1,
 		k_EPositionBottomLeft = 2,
@@ -1740,6 +1931,16 @@ namespace Steamworks {
 		k_EDurationControlOnlineState_OnlineHighPri = 3,		// currently in online play and requests not to be interrupted
 	}
 
+	[Flags]
+	public enum EBetaBranchFlags : int {
+		k_EBetaBranch_None			= 0,
+		k_EBetaBranch_Default		= 1,	// this is the default branch ("public")
+		k_EBetaBranch_Available		= 2,	// this branch can be selected (available)
+		k_EBetaBranch_Private		= 4,	// this is a private branch (password protected)
+		k_EBetaBranch_Selected		= 8,	// this is the currently selected branch (active)
+		k_EBetaBranch_Installed		= 16,	// this is the currently installed branch (mounted)
+	}
+
 	public enum EGameSearchErrorCode_t : int {
 		k_EGameSearchErrorCode_OK = 1,
 		k_EGameSearchErrorCode_Failed_Search_Already_In_Progress = 2,
@@ -1820,6 +2021,7 @@ namespace Steamworks {
 		k_EHTTPStatusCode305UseProxy =				305,
 		//k_EHTTPStatusCode306Unused =				306, (used in old HTTP spec, now unused in 1.1)
 		k_EHTTPStatusCode307TemporaryRedirect =		307,
+		k_EHTTPStatusCode308PermanentRedirect =		308,
 
 		// Error codes
 		k_EHTTPStatusCode400BadRequest =			400,
@@ -1897,10 +2099,6 @@ namespace Steamworks {
 		k_ESteamNetworkingIdentityType_SteamID = 16, // 64-bit CSteamID
 		k_ESteamNetworkingIdentityType_XboxPairwiseID = 17, // Publisher-specific user identity, as string
 		k_ESteamNetworkingIdentityType_SonyPSN = 18, // 64-bit ID
-		k_ESteamNetworkingIdentityType_GoogleStadia = 19, // 64-bit ID
-		//k_ESteamNetworkingIdentityType_NintendoNetworkServiceAccount,
-		//k_ESteamNetworkingIdentityType_EpicGameStore
-		//k_ESteamNetworkingIdentityType_WeGame
 
 		//
 		// Special identifiers.
@@ -2313,6 +2511,42 @@ namespace Steamworks {
 		/// Default is 512k (524288 bytes)
 		k_ESteamNetworkingConfig_SendBufferSize = 9,
 
+		/// [connection int32] Upper limit on total size (in bytes) of received messages
+		/// that will be buffered waiting to be processed by the application.  If this limit
+		/// is exceeded, packets will be dropped.  This is to protect us from a malicious
+		/// peer flooding us with messages faster than we can process them.
+		///
+		/// This must be bigger than k_ESteamNetworkingConfig_RecvMaxMessageSize
+		k_ESteamNetworkingConfig_RecvBufferSize = 47,
+
+		/// [connection int32] Upper limit on the number of received messages that will
+		/// that will be buffered waiting to be processed by the application.  If this limit
+		/// is exceeded, packets will be dropped.  This is to protect us from a malicious
+		/// peer flooding us with messages faster than we can pull them off the wire.
+		k_ESteamNetworkingConfig_RecvBufferMessages = 48,
+
+		/// [connection int32] Maximum message size that we are willing to receive.
+		/// if a client attempts to send us a message larger than this, the connection
+		/// will be immediately closed.
+		///
+		/// Default is 512k (524288 bytes).  Note that the peer needs to be able to
+		/// send a message this big.  (See k_cbMaxSteamNetworkingSocketsMessageSizeSend.)
+		k_ESteamNetworkingConfig_RecvMaxMessageSize = 49,
+
+		/// [connection int32] Max number of message segments that can be received
+		/// in a single UDP packet.  While decoding a packet, if the number of segments
+		/// exceeds this, we will abort further packet processing.
+		///
+		/// The default is effectively unlimited.  If you know that you very rarely
+		/// send small packets, you can protect yourself from malicious senders by
+		/// lowering this number.
+		///
+		/// In particular, if you are NOT using the reliability layer and are only using
+		/// SteamNetworkingSockets for datagram transport, setting this to a very low
+		/// number may be beneficial.  (We recommend a value of 2.)  Make sure your sender
+		/// disables Nagle!
+		k_ESteamNetworkingConfig_RecvMaxSegmentsPerPacket = 50,
+
 		/// [connection int64] Get/set userdata as a configuration option.
 		/// The default value is -1.   You may want to set the user data as
 		/// a config value, instead of using ISteamNetworkingSockets::SetConnectionUserData
@@ -2348,9 +2582,12 @@ namespace Steamworks {
 		//    ensure you have the current value.
 		k_ESteamNetworkingConfig_ConnectionUserData = 40,
 
-		/// [connection int32] Minimum/maximum send rate clamp, 0 is no limit.
-		/// This value will control the min/max allowed sending rate that
-		/// bandwidth estimation is allowed to reach.  Default is 0 (no-limit)
+		/// [connection int32] Minimum/maximum send rate clamp, in bytes/sec.
+		/// At the time of this writing these two options should always be set to
+		/// the same value, to manually configure a specific send rate.  The default
+		/// value is 256K.  Eventually we hope to have the library estimate the bandwidth
+		/// of the channel and set the send rate to that estimated bandwidth, and these
+		/// values will only set limits on that send rate.
 		k_ESteamNetworkingConfig_SendRateMin = 10,
 		k_ESteamNetworkingConfig_SendRateMax = 11,
 
@@ -2369,9 +2606,18 @@ namespace Steamworks {
 		/// we won't automatically reject a connection due to a failure to authenticate.
 		/// (You can examine the incoming connection and decide whether to accept it.)
 		///
+		/// 0: Don't attempt or accept unauthorized connections
+		/// 1: Attempt authorization when connecting, and allow unauthorized peers, but emit warnings
+		/// 2: don't attempt authentication, or complain if peer is unauthenticated
+		///
 		/// This is a dev configuration value, and you should not let users modify it in
 		/// production.
 		k_ESteamNetworkingConfig_IP_AllowWithoutAuth = 23,
+
+		/// [connection int32] The same as IP_AllowWithoutAuth, but will only apply
+		/// for connections to/from localhost addresses.  Whichever value is larger
+		/// (more permissive) will be used.
+		k_ESteamNetworkingConfig_IPLocalHost_AllowWithoutAuth = 52,
 
 		/// [connection int32] Do not send UDP packets with a payload of
 		/// larger than N bytes.  If you set this, k_ESteamNetworkingConfig_MTU_DataSize
@@ -2502,6 +2748,17 @@ namespace Steamworks {
 		/// generic platform UI.  (Only available on Steam.)
 		k_ESteamNetworkingConfig_EnableDiagnosticsUI = 46,
 
+		/// [connection int32] Send of time-since-previous-packet values in each UDP packet.
+		/// This add a small amount of packet overhead but allows for detailed jitter measurements
+		/// to be made by the receiver.
+		///
+		/// -  0: disables the sending
+		/// -  1: enables sending
+		/// - -1: (the default) Use the default for the connection type.  For plain UDP connections,
+		///       this is disabled, and for relayed connections, it is enabled.  Note that relays
+		///       always send the value.
+		k_ESteamNetworkingConfig_SendTimeSincePreviousPacket = 59,
+
 	//
 	// Simulating network conditions
 	//
@@ -2519,15 +2776,53 @@ namespace Steamworks {
 		k_ESteamNetworkingConfig_FakePacketLag_Send = 4,
 		k_ESteamNetworkingConfig_FakePacketLag_Recv = 5,
 
-		/// [global float] 0-100 Percentage of packets we will add additional delay
-		/// to (causing them to be reordered)
+		/// Simulated jitter/clumping.
+		///
+		/// For each packet, a jitter value is determined (which may
+		/// be zero).  This amount is added as extra delay to the
+		/// packet.  When a subsequent packet is queued, it receives its
+		/// own random jitter amount from the current time.  if this would
+		/// result in the packets being delivered out of order, the later
+		/// packet queue time is adjusted to happen after the first packet.
+		/// Thus simulating jitter by itself will not reorder packets, but it
+		/// can "clump" them.
+		///
+		///	- Avg: A random jitter time is generated using an exponential
+		///   distribution using this value as the mean (ms).  The default
+		///   is zero, which disables random jitter.
+		/// - Max: Limit the random jitter time to this value (ms).
+		///	- Pct: odds (0-100) that a random jitter value for the packet
+		///   will be generated.  Otherwise, a jitter value of zero
+		///   is used, and the packet will only be delayed by the jitter
+		///   system if necessary to retain order, due to the jitter of a
+		///   previous packet.
+		///
+		/// All values are [global float]
+		///
+		/// Fake jitter is simulated after fake lag, but before reordering.
+		k_ESteamNetworkingConfig_FakePacketJitter_Send_Avg = 53,
+		k_ESteamNetworkingConfig_FakePacketJitter_Send_Max = 54,
+		k_ESteamNetworkingConfig_FakePacketJitter_Send_Pct = 55,
+		k_ESteamNetworkingConfig_FakePacketJitter_Recv_Avg = 56,
+		k_ESteamNetworkingConfig_FakePacketJitter_Recv_Max = 57,
+		k_ESteamNetworkingConfig_FakePacketJitter_Recv_Pct = 58,
+
+		/// [global float] 0-100 Percentage of packets we will add additional
+		/// delay to.  If other packet(s) are sent/received within this delay
+		/// window (that doesn't also randomly receive the same extra delay),
+		/// then the packets become reordered.
+		///
+		/// This mechanism is primarily intended to generate out-of-order
+		/// packets.  To simulate random jitter, use the FakePacketJitter.
+		/// Fake packet reordering is applied after fake lag and jitter
 		k_ESteamNetworkingConfig_FakePacketReorder_Send = 6,
 		k_ESteamNetworkingConfig_FakePacketReorder_Recv = 7,
 
-		/// [global int32] Extra delay, in ms, to apply to reordered packets.
+		/// [global int32] Extra delay, in ms, to apply to reordered
+		/// packets.  The same time value is used for sending and receiving.
 		k_ESteamNetworkingConfig_FakePacketReorder_Time = 8,
 
-		/// [global float 0--100] Globally duplicate some percentage of packets we send
+		/// [global float 0--100] Globally duplicate some percentage of packets.
 		k_ESteamNetworkingConfig_FakePacketDup_Send = 26,
 		k_ESteamNetworkingConfig_FakePacketDup_Recv = 27,
 
@@ -2553,6 +2848,32 @@ namespace Steamworks {
 		k_ESteamNetworkingConfig_FakeRateLimit_Send_Burst = 43,
 		k_ESteamNetworkingConfig_FakeRateLimit_Recv_Rate = 44,
 		k_ESteamNetworkingConfig_FakeRateLimit_Recv_Burst = 45,
+
+		// Timeout used for out-of-order correction.  This is used when we see a small
+		// gap in the sequence number on a packet flow.  For example let's say we are
+		// processing packet 105 when the most recent one was 103.  104 might have dropped,
+		// but there is also a chance that packets are simply being reordered.  It is very
+		// common on certain types of connections for packet 104 to arrive very soon after 105,
+		// especially if 104 was large and 104 was small.  In this case, when we see packet 105
+		// we will shunt it aside and pend it, in the hopes of seeing 104 soon after.  If 104
+		// arrives before the a timeout occurs, then we can deliver the packets in order to the
+		// remainder of packet processing, and we will record this as a "correctable" out-of-order
+		// situation.  If the timer expires, then we will process packet 105, and assume for now
+		// that 104 has dropped.  (If 104 later arrives, we will process it, but that will be
+		// accounted for as uncorrected.)
+		//
+		// The default value is 1000 microseconds.  Note that the Windows scheduler does not
+		// have microsecond precision.
+		//
+		// Set the value to 0 to disable out of order correction at the packet layer.
+		// In many cases we are still effectively able to correct the situation because
+		// reassembly of message fragments is tolerant of fragments packets arriving out of
+		// order.  Also, when messages are decoded and inserted into the queue for the app
+		// to receive them, we will correct out of order messages that have not been
+		// dequeued by the app yet.  However, when out-of-order packets are corrected
+		// at the packet layer, they will not reduce the connection quality measure.
+		// (E.g. SteamNetConnectionRealTimeStatus_t::m_flConnectionQualityLocal)
+		k_ESteamNetworkingConfig_OutOfOrderCorrectionWindowMicroseconds = 51,
 
 	//
 	// Callbacks
@@ -2667,24 +2988,24 @@ namespace Steamworks {
 	// Settings for SDR relayed connections
 	//
 
-		/// [int32 global] If the first N pings to a port all fail, mark that port as unavailable for
+		/// [global int32] If the first N pings to a port all fail, mark that port as unavailable for
 		/// a while, and try a different one.  Some ISPs and routers may drop the first
 		/// packet, so setting this to 1 may greatly disrupt communications.
 		k_ESteamNetworkingConfig_SDRClient_ConsecutitivePingTimeoutsFailInitial = 19,
 
-		/// [int32 global] If N consecutive pings to a port fail, after having received successful
+		/// [global int32] If N consecutive pings to a port fail, after having received successful
 		/// communication, mark that port as unavailable for a while, and try a
 		/// different one.
 		k_ESteamNetworkingConfig_SDRClient_ConsecutitivePingTimeoutsFail = 20,
 
-		/// [int32 global] Minimum number of lifetime pings we need to send, before we think our estimate
+		/// [global int32] Minimum number of lifetime pings we need to send, before we think our estimate
 		/// is solid.  The first ping to each cluster is very often delayed because of NAT,
 		/// routers not having the best route, etc.  Until we've sent a sufficient number
 		/// of pings, our estimate is often inaccurate.  Keep pinging until we get this
 		/// many pings.
 		k_ESteamNetworkingConfig_SDRClient_MinPingsBeforePingAccurate = 21,
 
-		/// [int32 global] Set all steam datagram traffic to originate from the same
+		/// [global int32] Set all steam datagram traffic to originate from the same
 		/// local port. By default, we open up a new UDP socket (on a different local
 		/// port) for each relay.  This is slightly less optimal, but it works around
 		/// some routers that don't implement NAT properly.  If you have intermittent
@@ -2696,10 +3017,13 @@ namespace Steamworks {
 		/// only use relays in that cluster.  E.g. 'iad'
 		k_ESteamNetworkingConfig_SDRClient_ForceRelayCluster = 29,
 
-		/// [connection string] For debugging, generate our own (unsigned) ticket, using
-		/// the specified  gameserver address.  Router must be configured to accept unsigned
-		/// tickets.
-		k_ESteamNetworkingConfig_SDRClient_DebugTicketAddress = 30,
+		/// [connection string] For development, a base-64 encoded ticket generated
+		/// using the cert tool.  This can be used to connect to a gameserver via SDR
+		/// without a ticket generated using the game coordinator.  (You will still
+		/// need a key that is trusted for your app, however.)
+		///
+		/// This can also be passed using the SDR_DEVTICKET environment variable
+		k_ESteamNetworkingConfig_SDRClient_DevTicket = 30,
 
 		/// [global string] For debugging.  Override list of relays from the config with
 		/// this set (maybe just one).  Comma-separated list.
@@ -2711,6 +3035,10 @@ namespace Steamworks {
 		/// This is a dev configuration value, you probably should not let users modify it
 		/// in production.
 		k_ESteamNetworkingConfig_SDRClient_FakeClusterPing = 36,
+
+		/// [global int32] When probing the SteamDatagram network, we limit exploration
+		/// to the closest N POPs, based on our current best approximated ping to that POP.
+		k_ESteamNetworkingConfig_SDRClient_LimitPingProbesToNearestN = 60,
 
 	//
 	// Log levels for debugging information of various subsystems.
@@ -2727,6 +3055,10 @@ namespace Steamworks {
 		k_ESteamNetworkingConfig_LogLevel_P2PRendezvous = 17, // [connection int32] P2P rendezvous messages
 		k_ESteamNetworkingConfig_LogLevel_SDRRelayPings = 18, // [global int32] Ping relays
 
+		// Experimental.  Set the ECN header field on all outbound UDP packets
+		// -1 = the default, and means "don't set anything".
+		// 0..3 = set that value.  (Even though 0 is the default UDP ECN value, a 0 here means "explicitly set a 0".)
+		k_ESteamNetworkingConfig_ECN = 999,
 
 		// Deleted, do not use
 		k_ESteamNetworkingConfig_DELETED_EnumerateDevVars = 35,

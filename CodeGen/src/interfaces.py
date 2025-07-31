@@ -77,7 +77,7 @@ g_TypeDict = {
     "const SteamNetworkingIdentity *": "ref SteamNetworkingIdentity",
     "SteamNetworkingErrMsg &": "out SteamNetworkingErrMsg",
     "const SteamNetConnectionInfo_t &": "ref SteamNetConnectionInfo_t",
-    "SteamNetworkingMessage_t **": "IntPtr[]",
+    "SteamNetworkingMessage_t": "IntPtr",
 
     # SteamNetworkingTypes which are stubbed
     "SteamDatagramGameCoordinatorServerLogin *": "IntPtr",
@@ -108,7 +108,6 @@ g_ReturnTypeDict = {
     "SteamNetworkingMessage_t *": "IntPtr",
 
     # TODO: UGH
-    "ISteamAppList *": "IntPtr",
     "ISteamApps *": "IntPtr",
     "ISteamController *": "IntPtr",
     "ISteamFriends *": "IntPtr",
@@ -142,14 +141,22 @@ g_SpecialReturnTypeDict = {
     "ISteamGameServerUtils_GetAppID": "AppId_t",
 }
 
+# These args are missing a clang attribute like ARRAY_COUNT
 g_SpecialArgsDict = {
-    # These args are missing a clang attribute like ARRAY_COUNT
-    "ISteamAppList_GetInstalledApps": {
-        "pvecAppID": "AppId_t[]",
-    },
+    # ISteamApps
     "ISteamApps_GetInstalledDepots": {
         "pvecDepots": "DepotId_t[]",
     },
+
+    # ISteamClient
+    "ISteamClient_SetLocalIPBinding": {
+        "unIP": "ref SteamIPAddress_t",
+    },
+    "ISteamGameServerClient_SetLocalIPBinding": {
+        "unIP": "ref SteamIPAddress_t",
+    },
+
+    # ISteamGameServer
     "ISteamGameServer_SendUserConnectAndAuthenticate_DEPRECATED": {
         "pvAuthBlob": "byte[]",
     },
@@ -165,24 +172,87 @@ g_SpecialArgsDict = {
     "ISteamGameServer_GetNextOutgoingPacket": {
         "pOut": "byte[]",
     },
+
+    # ISteamHTTP
     "ISteamHTTP_GetHTTPResponseHeaderValue": {
         "pHeaderValueBuffer": "byte[]",
     },
+    "ISteamGameServerHTTP_GetHTTPResponseHeaderValue": {
+        "pHeaderValueBuffer": "byte[]",
+    },
+
     "ISteamHTTP_GetHTTPResponseBodyData": {
         "pBodyDataBuffer": "byte[]",
     },
+    "ISteamGameServerHTTP_GetHTTPResponseBodyData": {
+        "pBodyDataBuffer": "byte[]",
+    },
+
     "ISteamHTTP_GetHTTPStreamingResponseBodyData": {
         "pBodyDataBuffer": "byte[]",
     },
+    "ISteamGameServerHTTP_GetHTTPStreamingResponseBodyData": {
+        "pBodyDataBuffer": "byte[]",
+    },
+
     "ISteamHTTP_SetHTTPRequestRawPostBody": {
         "pubBody": "byte[]",
     },
+    "ISteamGameServerHTTP_SetHTTPRequestRawPostBody": {
+        "pubBody": "byte[]",
+    },
+
+    # ISteamInventory
     "ISteamInventory_SerializeResult": {
         "pOutBuffer": "byte[]",
     },
+    "ISteamGameServerInventory_SerializeResult": {
+        "pOutBuffer": "byte[]",
+    },
+
     "ISteamInventory_DeserializeResult": {
         "pBuffer": "byte[]",
     },
+    "ISteamGameServerInventory_DeserializeResult": {
+        "pBuffer": "byte[]",
+    },
+
+    "ISteamInventory_GetResultItems": {
+        "punOutItemsArraySize": "ref uint",
+    },
+    "ISteamGameServerInventory_GetResultItems": {
+        "punOutItemsArraySize": "ref uint",
+    },
+
+    "ISteamInventory_GetItemDefinitionProperty": {
+        "punValueBufferSizeOut": "ref uint",
+    },
+    "ISteamGameServerInventory_GetItemDefinitionProperty": {
+        "punValueBufferSizeOut": "ref uint",
+    },
+
+    "ISteamInventory_GetResultItemProperty": {
+        "punValueBufferSizeOut": "ref uint",
+    },
+    "ISteamGameServerInventory_GetResultItemProperty": {
+        "punValueBufferSizeOut": "ref uint",
+    },
+
+    "ISteamInventory_GetItemDefinitionIDs": {
+        "punItemDefIDsArraySize": "ref uint",
+    },
+    "ISteamGameServerInventory_GetItemDefinitionIDs": {
+        "punItemDefIDsArraySize": "ref uint",
+    },
+
+    "ISteamInventory_GetEligiblePromoItemDefinitionIDs": {
+        "punItemDefIDsArraySize": "ref uint",
+    },
+    "ISteamGameServerInventory_GetEligiblePromoItemDefinitionIDs": {
+        "punItemDefIDsArraySize": "ref uint",
+    },
+
+    # ISteamMatchmaking
     "ISteamMatchmaking_SendLobbyChatMsg": {
         "pvMsgBody": "byte[]",
     },
@@ -192,24 +262,116 @@ g_SpecialArgsDict = {
     "ISteamMusicRemote_SetPNGIcon_64x64": {
         "pvBuffer": "byte[]",
     },
+
+    # ISteamMusicRemote
     "ISteamMusicRemote_UpdateCurrentEntryCoverArt": {
         "pvBuffer": "byte[]",
     },
+
+    # ISteamNetworking
     "ISteamNetworking_SendP2PPacket": {
         "pubData": "byte[]",
     },
+    "ISteamGameServerNetworking_SendP2PPacket": {
+        "pubData": "byte[]",
+    },
+
     "ISteamNetworking_ReadP2PPacket": {
         "pubDest": "byte[]",
     },
+    "ISteamGameServerNetworking_ReadP2PPacket": {
+        "pubDest": "byte[]",
+    },
+
     "ISteamNetworking_SendDataOnSocket": {
         "pubData": "byte[]",
     },
+    "ISteamGameServerNetworking_SendDataOnSocket": {
+        "pubData": "byte[]",
+    },
+
     "ISteamNetworking_RetrieveDataFromSocket": {
         "pubDest": "byte[]",
     },
+    "ISteamGameServerNetworking_RetrieveDataFromSocket": {
+        "pubDest": "byte[]",
+    },
+
     "ISteamNetworking_RetrieveData": {
         "pubDest": "byte[]",
     },
+    "ISteamGameServerNetworking_RetrieveData": {
+        "pubDest": "byte[]",
+    },
+
+    # ISteamNetworkingUtils
+    "ISteamNetworkingUtils_SteamNetworkingIPAddr_ToString": {
+        "addr": "ref SteamNetworkingIPAddr",
+        "cbBuf": "uint",
+    },
+    "ISteamGameServerNetworkingUtils_SteamNetworkingIPAddr_ToString": {
+        "addr": "ref SteamNetworkingIPAddr",
+        "cbBuf": "uint",
+    },
+
+    "ISteamNetworkingUtils_SteamNetworkingIdentity_ToString": {
+        "identity": "ref SteamNetworkingIdentity",
+        "cbBuf": "uint",
+    },
+    "ISteamGameServerNetworkingUtils_SteamNetworkingIdentity_ToString": {
+        "identity": "ref SteamNetworkingIdentity",
+        "cbBuf": "uint",
+    },
+
+    "ISteamNetworkingUtils_GetConfigValue": {
+        "cbResult": "ref ulong",
+    },
+    "ISteamGameServerNetworkingUtils_GetConfigValue": {
+        "cbResult": "ref ulong",
+    },
+
+    "ISteamNetworkingSockets_SendMessages": {
+        "pMessages": "IntPtr[]",
+        "pOutMessageNumberOrResult": "long[]",
+    },
+    "ISteamGameServerNetworkingSockets_SendMessages": {
+        "pMessages": "IntPtr[]",
+        "pOutMessageNumberOrResult": "long[]",
+    },
+
+    # ISteamNetworkingSockets
+    "ISteamNetworkingSockets_GetConnectionRealTimeStatus": {
+        "pStatus": "ref SteamNetConnectionRealTimeStatus_t",
+        "pLanes": "ref SteamNetConnectionRealTimeLaneStatus_t",
+    },
+    "ISteamGameServerNetworkingSockets_GetConnectionRealTimeStatus": {
+        "pStatus": "ref SteamNetConnectionRealTimeStatus_t",
+        "pLanes": "ref SteamNetConnectionRealTimeLaneStatus_t",
+    },
+
+    "ISteamNetworkingSockets_ConfigureConnectionLanes": {
+        "pLanePriorities": "int[]",
+        "pLaneWeights": "ushort[]",
+    },
+    "ISteamGameServerNetworkingSockets_ConfigureConnectionLanes": {
+        "pLanePriorities": "int[]",
+        "pLaneWeights": "ushort[]",
+    },
+
+    # ISteamParties
+    "ISteamParties_CreateBeacon": {
+        "pBeaconLocation": "ref SteamPartyBeaconLocation_t",
+    },
+    "ISteamParties_GetAvailableBeaconLocations": {
+        "pLocationList": "SteamPartyBeaconLocation_t[]",
+    },
+
+    # ISteamRemotePlay
+    "ISteamRemotePlay_GetInput": {
+        "pInput": "RemotePlayInput_t[]",
+    },
+
+    # ISteamRemoteStorage
     "ISteamRemoteStorage_FileWrite": {
         "pvData": "byte[]",
     },
@@ -228,24 +390,75 @@ g_SpecialArgsDict = {
     "ISteamRemoteStorage_UGCRead": {
         "pvData": "byte[]",
     },
+
+    # ISteamScreenshots
     "ISteamScreenshots_WriteScreenshot": {
         "pubRGB": "byte[]",
     },
+
+    # ISteamTimeline
+    "ISteamTimeline_OpenOverlayToTimelineEvent": {
+        "ulEvent": "TimelineEventHandle_t",
+    },
+
+    # ISteamUGC
     "ISteamUGC_CreateQueryUGCDetailsRequest": {
         "pvecPublishedFileID": "PublishedFileId_t[]",
     },
+    "ISteamGameServerUGC_CreateQueryUGCDetailsRequest": {
+        "pvecPublishedFileID": "PublishedFileId_t[]",
+    },
+
     "ISteamUGC_GetQueryUGCChildren": {
         "pvecPublishedFileID": "PublishedFileId_t[]",
     },
+    "ISteamGameServerUGC_GetQueryUGCChildren": {
+        "pvecPublishedFileID": "PublishedFileId_t[]",
+    },
+
     "ISteamUGC_GetSubscribedItems": {
         "pvecPublishedFileID": "PublishedFileId_t[]",
     },
+    "ISteamGameServerUGC_GetSubscribedItems": {
+        "pvecPublishedFileID": "PublishedFileId_t[]",
+    },
+
     "ISteamUGC_StartPlaytimeTracking": {
         "pvecPublishedFileID": "PublishedFileId_t[]",
     },
+    "ISteamGameServerUGC_StartPlaytimeTracking": {
+        "pvecPublishedFileID": "PublishedFileId_t[]",
+    },
+
     "ISteamUGC_StopPlaytimeTracking": {
         "pvecPublishedFileID": "PublishedFileId_t[]",
     },
+    "ISteamGameServerUGC_StopPlaytimeTracking": {
+        "pvecPublishedFileID": "PublishedFileId_t[]",
+    },
+
+    "ISteamUGC_GetUserContentDescriptorPreferences": {
+        "pvecDescriptors": "EUGCContentDescriptorID[]",
+    },
+    "ISteamGameServerUGC_GetUserContentDescriptorPreferences": {
+        "pvecDescriptors": "EUGCContentDescriptorID[]",
+    },
+
+    "ISteamUGC_SetItemsDisabledLocally": {
+        "pvecPublishedFileIDs": "PublishedFileId_t[]",
+    },
+    "ISteamGameServerUGC_SetItemsDisabledLocally": {
+        "pvecPublishedFileIDs": "PublishedFileId_t[]",
+    },
+
+    "ISteamUGC_SetSubscriptionsLoadOrder": {
+        "pvecPublishedFileIDs": "PublishedFileId_t[]",
+    },
+    "ISteamGameServerUGC_SetSubscriptionsLoadOrder": {
+        "pvecPublishedFileIDs": "PublishedFileId_t[]",
+    },
+
+    # ISteamUser
     "ISteamUser_InitiateGameConnection_DEPRECATED": {
         "pAuthBlob": "byte[]",
     },
@@ -273,70 +486,29 @@ g_SpecialArgsDict = {
     "ISteamUser_GetEncryptedAppTicket": {
         "pTicket": "byte[]",
     },
+
+    # ISteamUserStats
     "ISteamUserStats_GetDownloadedLeaderboardEntry": {
         "pDetails": "int[]",
     },
     "ISteamUserStats_UploadLeaderboardScore": {
         "pScoreDetails": "int[]",
     },
-    "ISteamUtils_GetImageRGBA": {
-        "pubDest": "byte[]",
-    },
 
-    # GameServer Copies
-    "ISteamGameServerHTTP_GetHTTPResponseHeaderValue": {
-        "pHeaderValueBuffer": "byte[]",
-    },
-    "ISteamGameServerHTTP_GetHTTPResponseBodyData": {
-        "pBodyDataBuffer": "byte[]",
-    },
-    "ISteamGameServerHTTP_GetHTTPStreamingResponseBodyData": {
-        "pBodyDataBuffer": "byte[]",
-    },
-    "ISteamGameServerHTTP_SetHTTPRequestRawPostBody": {
-        "pubBody": "byte[]",
-    },
-    "ISteamGameServerInventory_SerializeResult": {
-        "pOutBuffer": "byte[]",
-    },
-    "ISteamGameServerInventory_DeserializeResult": {
-        "pBuffer": "byte[]",
-    },
-    "ISteamGameServerNetworking_SendP2PPacket": {
-        "pubData": "byte[]",
-    },
-    "ISteamGameServerNetworking_ReadP2PPacket": {
-        "pubDest": "byte[]",
-    },
-    "ISteamGameServerNetworking_SendDataOnSocket": {
-        "pubData": "byte[]",
-    },
-    "ISteamGameServerNetworking_RetrieveDataFromSocket": {
-        "pubDest": "byte[]",
-    },
-    "ISteamGameServerNetworking_RetrieveData": {
+    # ISteamUtils
+    "ISteamUtils_GetImageRGBA": {
         "pubDest": "byte[]",
     },
     "ISteamGameServerUtils_GetImageRGBA": {
         "pubDest": "byte[]",
     },
-    "ISteamGameServerUGC_CreateQueryUGCDetailsRequest": {
-        "pvecPublishedFileID": "PublishedFileId_t[]",
-    },
-    "ISteamGameServerUGC_GetQueryUGCChildren": {
-        "pvecPublishedFileID": "PublishedFileId_t[]",
-    },
-    "ISteamGameServerUGC_GetSubscribedItems": {
-        "pvecPublishedFileID": "PublishedFileId_t[]",
-    },
-    "ISteamGameServerUGC_StartPlaytimeTracking": {
-        "pvecPublishedFileID": "PublishedFileId_t[]",
-    },
-    "ISteamGameServerUGC_StopPlaytimeTracking": {
-        "pvecPublishedFileID": "PublishedFileId_t[]",
+
+    # ISteamVideo
+    "ISteamVideo_GetOPFStringForApp": {
+        "pnBufferSize": "ref int"
     },
 
-    # This is a little nicety that we provide, I don't know why Valve doesn't just change it.
+    # This is a little nicety that we provide
     "ISteamFriends_GetFriendCount": {
         "iFriendFlags": "EFriendFlags",
     },
@@ -345,98 +517,6 @@ g_SpecialArgsDict = {
     },
     "ISteamFriends_HasFriend": {
         "iFriendFlags": "EFriendFlags",
-    },
-
-    # These end up being "out type", when we need them to be "ref type"
-    "ISteamInventory_GetResultItems": {
-        "punOutItemsArraySize": "ref uint",
-    },
-    "ISteamInventory_GetItemDefinitionProperty": {
-        "punValueBufferSizeOut": "ref uint",
-    },
-    "ISteamInventory_GetResultItemProperty": {
-        "punValueBufferSizeOut": "ref uint",
-    },
-    "ISteamInventory_GetItemDefinitionIDs": {
-        "punItemDefIDsArraySize": "ref uint",
-    },
-    "ISteamInventory_GetEligiblePromoItemDefinitionIDs": {
-        "punItemDefIDsArraySize": "ref uint",
-    },
-
-    # And the GameServer versions:
-    "ISteamGameServerInventory_GetResultItems": {
-        "punOutItemsArraySize": "ref uint",
-    },
-    "ISteamGameServerInventory_GetItemDefinitionProperty": {
-        "punValueBufferSizeOut": "ref uint",
-    },
-    "ISteamGameServerInventory_GetResultItemProperty": {
-        "punValueBufferSizeOut": "ref uint",
-    },
-    "ISteamGameServerInventory_GetItemDefinitionIDs": {
-        "punItemDefIDsArraySize": "ref uint",
-    },
-    "ISteamGameServerInventory_GetEligiblePromoItemDefinitionIDs": {
-        "punItemDefIDsArraySize": "ref uint",
-    },
-
-    "ISteamVideo_GetOPFStringForApp": {
-        "pnBufferSize": "ref int"
-    },
-
-    "ISteamParties_CreateBeacon": {
-        "pBeaconLocation": "ref SteamPartyBeaconLocation_t",
-    },
-    "ISteamParties_GetAvailableBeaconLocations": {
-        "pLocationList": "SteamPartyBeaconLocation_t[]",
-    },
-
-    "ISteamClient_SetLocalIPBinding": {
-        "unIP": "ref SteamIPAddress_t",
-    },
-
-    "ISteamNetworkingUtils_SteamNetworkingIPAddr_ToString": {
-        "addr": "ref SteamNetworkingIPAddr",
-        "cbBuf": "uint",
-    },
-    "ISteamGameServerNetworkingUtils_SteamNetworkingIPAddr_ToString": {
-        "addr": "ref SteamNetworkingIPAddr",
-        "cbBuf": "uint",
-    },
-
-    "ISteamNetworkingUtils_SteamNetworkingIdentity_ToString": {
-        "identity": "ref SteamNetworkingIdentity",
-        "cbBuf": "uint",
-    },
-    "ISteamGameServerNetworkingUtils_SteamNetworkingIdentity_ToString": {
-        "identity": "ref SteamNetworkingIdentity",
-        "cbBuf": "uint",
-    },
-
-    "ISteamNetworkingUtils_GetConfigValue": {
-        "cbResult": "ref ulong",
-    },
-    "ISteamGameServerNetworkingUtils_GetConfigValue": {
-        "cbResult": "ref ulong",
-    },
-
-    "ISteamNetworkingSockets_SendMessages": {
-        "pMessages": "SteamNetworkingMessage_t[]",
-        "pOutMessageNumberOrResult": "long[]",
-    },
-    "ISteamGameServerNetworkingSockets_SendMessages": {
-        "pMessages": "SteamNetworkingMessage_t[]",
-        "pOutMessageNumberOrResult": "long[]",
-    },
-
-    "ISteamNetworkingSockets_GetConnectionRealTimeStatus": {
-        "pStatus": "ref SteamNetConnectionRealTimeStatus_t",
-        "pLanes": "ref SteamNetConnectionRealTimeLaneStatus_t",
-    },
-    "ISteamGameServerNetworkingSockets_GetConnectionRealTimeStatus": {
-        "pStatus": "ref SteamNetConnectionRealTimeStatus_t",
-        "pLanes": "ref SteamNetConnectionRealTimeLaneStatus_t",
     },
 }
 
@@ -448,37 +528,42 @@ g_SpecialWrapperArgsDict = {
     "ISteamFriends_GetFriendMessage": {
         "pvData": "out string",
     },
-
-    "ISteamClient_SetLocalIPBinding": {
-        "unIP": "ref SteamIPAddress_t",
-    },
-    "ISteamGameServerClient_SetLocalIPBinding": {
-        "unIP": "ref SteamIPAddress_t",
-    },
 }
 
 g_FixedAttributeValues = {
     "ISteamInventory_GetItemsWithPrices": {
-        "pArrayItemDefs": {
-            "STEAM_OUT_ARRAY_COUNT": "unArrayLength"
-        },
-        "pCurrentPrices": {
-            "STEAM_OUT_ARRAY_COUNT": "unArrayLength"
-        },
-        "pBasePrices": {
-            "STEAM_OUT_ARRAY_COUNT": "unArrayLength"
-        },
+        "pArrayItemDefs": steamworksparser.ArgAttribute("STEAM_OUT_ARRAY_COUNT", "unArrayLength"),
+        "pCurrentPrices": steamworksparser.ArgAttribute("STEAM_OUT_ARRAY_COUNT", "unArrayLength"),
+        "pBasePrices": steamworksparser.ArgAttribute("STEAM_OUT_ARRAY_COUNT", "unArrayLength"),
     },
     "ISteamGameServerInventory_GetItemsWithPrices": {
-        "pArrayItemDefs": {
-            "STEAM_OUT_ARRAY_COUNT": "unArrayLength"
-        },
-        "pCurrentPrices": {
-            "STEAM_OUT_ARRAY_COUNT": "unArrayLength"
-        },
-        "pBasePrices": {
-            "STEAM_OUT_ARRAY_COUNT": "unArrayLength"
-        },
+        "pArrayItemDefs": steamworksparser.ArgAttribute("STEAM_OUT_ARRAY_COUNT", "unArrayLength"),
+        "pCurrentPrices": steamworksparser.ArgAttribute("STEAM_OUT_ARRAY_COUNT", "unArrayLength"),
+        "pBasePrices": steamworksparser.ArgAttribute("STEAM_OUT_ARRAY_COUNT", "unArrayLength"),
+    },
+    "ISteamUGC_GetQueryUGCContentDescriptors": {
+        "pvecDescriptors": steamworksparser.ArgAttribute("STEAM_OUT_ARRAY_COUNT", "cMaxEntries"),
+    },
+    "ISteamGameServerUGC_GetQueryUGCContentDescriptors": {
+        "pvecDescriptors": steamworksparser.ArgAttribute("STEAM_OUT_ARRAY_COUNT", "cMaxEntries"),
+    },
+    "ISteamNetworkingMessages_ReceiveMessagesOnChannel": {
+        "ppOutMessages": steamworksparser.ArgAttribute("STEAM_OUT_ARRAY_COUNT", "nMaxMessages"),
+    },
+    "ISteamGameServerNetworkingMessages_ReceiveMessagesOnChannel": {
+        "ppOutMessages": steamworksparser.ArgAttribute("STEAM_OUT_ARRAY_COUNT", "nMaxMessages"),
+    },
+    "ISteamNetworkingSockets_ReceiveMessagesOnConnection": {
+        "ppOutMessages": steamworksparser.ArgAttribute("STEAM_OUT_ARRAY_COUNT", "nMaxMessages"),
+    },
+    "ISteamGameServerNetworkingSockets_ReceiveMessagesOnConnection": {
+        "ppOutMessages": steamworksparser.ArgAttribute("STEAM_OUT_ARRAY_COUNT", "nMaxMessages"),
+    },
+    "ISteamNetworkingSockets_ReceiveMessagesOnPollGroup": {
+        "ppOutMessages": steamworksparser.ArgAttribute("STEAM_OUT_ARRAY_COUNT", "nMaxMessages"),
+    },
+    "ISteamGameServerNetworkingSockets_ReceiveMessagesOnPollGroup": {
+        "ppOutMessages": steamworksparser.ArgAttribute("STEAM_OUT_ARRAY_COUNT", "nMaxMessages"),
     },
 }
 
@@ -500,8 +585,10 @@ g_SkippedTypedefs = (
 
 g_ArgDefaultLookup = {
     "k_EActivateGameOverlayToWebPageMode_Default": "EActivateGameOverlayToWebPageMode.k_EActivateGameOverlayToWebPageMode_Default",
+    "k_ETimelineEventClipPriority_None": "ETimelineEventClipPriority.k_ETimelineEventClipPriority_None",
     "NULL": "null",
     "nullptr": "null",
+    "0.f": "0.0f",
 }
 
 HEADER = None
@@ -535,6 +622,8 @@ def main(parser):
         out.write(bytes("}\n\n", "utf-8"))
         out.write(bytes("#endif // !DISABLESTEAMWORKS\n", "utf-8"))
 
+def get_arg_attribute(strEntryPoint, arg):
+    return g_FixedAttributeValues.get(strEntryPoint, dict()).get(arg.name, arg.attribute)
 
 def parse(f):
     if f.name in g_SkippedFiles:
@@ -548,8 +637,6 @@ def parse(f):
 
     if g_Output:
         with open('../com.rlabrecque.steamworks.net/Runtime/autogen/' + os.path.splitext(f.name)[0] + '.cs', 'wb') as out:
-            if f.name in ["isteamnetworkingutils.h", "isteamnetworkingsockets.h", "isteamgameservernetworkingutils.h", "isteamgameservernetworkingsockets.h"]:
-                out.write(bytes("#define STEAMNETWORKINGSOCKETS_ENABLE_SDR\n", "utf-8"))
             out.write(bytes(HEADER, "utf-8"))
             out.write(bytes("namespace Steamworks {\n", "utf-8"))
             for line in g_Output:
@@ -787,28 +874,27 @@ def parse_args(strEntryPoint, args):
     else:
         argnames = "CSteamAPIContext.Get" + ifacename + "(), "
 
-    getsize = False
+    getNextArgAsStringSize = False
+    argNamesToAddAsStringSize = []
 
     for arg in args:
+        potentialtype = arg.type.rstrip("*").lstrip("const ").rstrip()
         argtype = g_TypeDict.get(arg.type, arg.type)
         if argtype.endswith("*"):
-            potentialtype = arg.type.rstrip("*").lstrip("const ").rstrip()
             argtype = "out " + g_TypeDict.get(potentialtype, potentialtype)
         argtype = g_SpecialArgsDict.get(strEntryPoint, dict()).get(arg.name, argtype)
 
-        if arg.attribute:
-            if arg.attribute.name == "STEAM_OUT_ARRAY" or arg.attribute.name == "STEAM_OUT_ARRAY_CALL" or arg.attribute.name == "STEAM_OUT_ARRAY_COUNT" or arg.attribute.name == "STEAM_ARRAY_COUNT" or arg.attribute.name == "STEAM_ARRAY_COUNT_D":
-                potentialtype = arg.type.rstrip("*").rstrip()
+        argattribute = get_arg_attribute(strEntryPoint, arg)
+        if argattribute:
+            if argattribute.name == "STEAM_OUT_ARRAY" or argattribute.name == "STEAM_OUT_ARRAY_CALL" or argattribute.name == "STEAM_OUT_ARRAY_COUNT" or argattribute.name == "STEAM_ARRAY_COUNT" or argattribute.name == "STEAM_ARRAY_COUNT_D":
                 argtype = g_TypeDict.get(potentialtype, potentialtype) + "[]"
-            #if arg.attribute.name == "OUT_STRING" or arg.attribute.name == "OUT_STRING_COUNT":  #Unused for now
 
-            if arg.attribute.name == "STEAM_OUT_ARRAY_COUNT":
-                fixedattrvalue = g_FixedAttributeValues.get(strEntryPoint, dict()).get(arg.name, dict()).get(arg.attribute.name, arg.attribute.value)
-                commaindex = fixedattrvalue.find(',')
+            if argattribute.name == "STEAM_OUT_ARRAY_COUNT":
+                commaindex = argattribute.value.find(',')
                 if commaindex > 0:
-                    args_with_explicit_count[arg.name] = fixedattrvalue[:commaindex]
+                    args_with_explicit_count[arg.name] = argattribute.value[:commaindex]
                 else:
-                    args_with_explicit_count[arg.name] = fixedattrvalue
+                    args_with_explicit_count[arg.name] = argattribute.value
 
 
         if arg.type == "MatchMakingKeyValuePair_t **":  # TODO: Fixme - Small Hack... We do this because MatchMakingKeyValuePair's have ARRAY_COUNT() and two **'s, things get broken :(
@@ -858,9 +944,13 @@ def parse_args(strEntryPoint, args):
         else:
             argnames += arg.name
 
-        if getsize:
-            getsize = False
+        if getNextArgAsStringSize:
+            getNextArgAsStringSize = False
             outstringsize.append(arg)
+
+        for tempargname in argNamesToAddAsStringSize:
+            if tempargname == arg.name:
+                outstringsize.append(arg)
 
         if wrapperargtype == "string":
             stringargs.append(arg.name)
@@ -868,8 +958,13 @@ def parse_args(strEntryPoint, args):
         elif wrapperargtype == "out string":
             outstringargs.append(arg.name)
             argnames += "2"
-            if strEntryPoint != "ISteamRemoteStorage_GetUGCDetails":
-                getsize = True
+            if argattribute:
+                if argattribute.name == "STEAM_OUT_STRING_COUNT":
+                    argNamesToAddAsStringSize.append(argattribute.value)
+                if argattribute.name == "STEAM_OUT_STRING":
+                    pass
+            else:
+                getNextArgAsStringSize = True
 
         argnames += ", "
 
